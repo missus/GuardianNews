@@ -1,3 +1,8 @@
+/*
+ * Created by Karolin Fornet.
+ * Copyright (c) 2017.  All rights reserved.
+ */
+
 package com.example.android.guardiannews;
 
 import android.content.AsyncTaskLoader;
@@ -6,8 +11,6 @@ import android.content.Context;
 import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
-
-    private static final String LOG_TAG = NewsLoader.class.getName();
 
     private final String mUrl;
 
@@ -26,8 +29,6 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
         if (mUrl == null) {
             return null;
         }
-
-        List<News> news = QueryUtils.fetchNewsData(mUrl);
-        return news;
+        return QueryUtils.fetchNewsData(mUrl);
     }
 }

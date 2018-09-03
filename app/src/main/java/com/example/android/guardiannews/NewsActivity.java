@@ -1,3 +1,8 @@
+/*
+ * Created by Karolin Fornet.
+ * Copyright (c) 2017.  All rights reserved.
+ */
+
 package com.example.android.guardiannews;
 
 import android.app.LoaderManager;
@@ -22,6 +27,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.android.guardiannews.BuildConfig.API_KEY;
+
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
     private NewsAdapter mAdapter;
@@ -35,16 +42,16 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String LOG_TAG = NewsActivity.class.getName();
     private static final int NEWS_LOADER_ID = 1;
     private static final String NEWS_REQUEST_URL = "http://content.guardianapis.com/search";
-    private static final String API_KEY = "57eeaf06-0046-4d55-a9b8-2ba24bb41981";
     private static final String URI = "URI";
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
 
-        mNewsListView = (ListView) findViewById(R.id.list);
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty);
+        mNewsListView = findViewById(R.id.list);
+        mEmptyStateTextView = findViewById(R.id.empty);
         mNewsListView.setEmptyView(mEmptyStateTextView);
         mAdapter = new NewsAdapter(NewsActivity.this, new ArrayList<News>());
         mNewsListView.setAdapter(mAdapter);
@@ -64,7 +71,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
             mEmptyStateTextView.setText(R.string.no_internet);
         }
 
-        mSwipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        mSwipeContainer = findViewById(R.id.swipeContainer);
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -94,6 +101,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+        mPrefChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                search();
+            }
+        };
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(mPrefChangeListener);
     }
 
     private void search() {
@@ -168,5 +182,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mPrefChangeListener);
     }
 }

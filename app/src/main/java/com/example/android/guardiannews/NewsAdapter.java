@@ -1,3 +1,8 @@
+/*
+ * Created by Karolin Fornet.
+ * Copyright (c) 2017.  All rights reserved.
+ */
+
 package com.example.android.guardiannews;
 
 import android.content.Context;
@@ -28,22 +33,19 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         News currentNews = getItem(position);
 
-        TextView authorView = (TextView) convertView.findViewById(R.id.section);
+        TextView authorView = convertView.findViewById(R.id.section);
         authorView.setText(currentNews.getSection());
 
-        TextView titleView = (TextView) convertView.findViewById(R.id.title);
+        TextView titleView = convertView.findViewById(R.id.title);
         titleView.setText(currentNews.getTitle());
 
         String[] parts = currentNews.getDate().split(TIME_SEPARATOR);
         String date = parts[0];
         String time = parts[1].substring(0,5);
-        TextView dateView = (TextView) convertView.findViewById(R.id.date);
+        TextView dateView = convertView.findViewById(R.id.date);
         dateView.setText(date);
-        TextView timeView = (TextView) convertView.findViewById(R.id.time);
+        TextView timeView = convertView.findViewById(R.id.time);
         timeView.setText(time);
-
         return convertView;
     }
-
-
 }

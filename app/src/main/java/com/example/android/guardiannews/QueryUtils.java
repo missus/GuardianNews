@@ -1,3 +1,8 @@
+/*
+ * Created by Karolin Fornet.
+ * Copyright (c) 2017.  All rights reserved.
+ */
+
 package com.example.android.guardiannews;
 
 import android.text.TextUtils;
@@ -120,7 +125,6 @@ public final class QueryUtils {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
-        List<News> news = extractFeatureFromJson(jsonResponse);
-        return news;
+        return extractFeatureFromJson(jsonResponse);
     }
 }
